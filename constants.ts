@@ -1,0 +1,97 @@
+import type { Question } from './types';
+
+export const QUESTIONS: Question[] = [
+  {
+    id: 'currency',
+    text: 'What is your primary currency?',
+    type: 'currency',
+    options: [
+      'USD ($)', 'EUR (€)', 'JPY (¥)', 'GBP (£)', 'AUD ($)', 'CAD ($)', 'CHF (Fr)', 'CNY (¥)', 'SEK (kr)', 'NZD ($)',
+      'MXN ($)', 'SGD ($)', 'HKD ($)', 'NOK (kr)', 'KRW (₩)', 'TRY (₺)', 'RUB (₽)', 'INR (₹)', 'BRL (R$)', 'ZAR (R)',
+      'AED (د.إ)', 'AFN (؋)', 'ALL (L)', 'AMD (֏)', 'ANG (ƒ)', 'AOA (Kz)', 'ARS ($)', 'AWG (ƒ)', 'AZN (₼)', 'BAM (KM)',
+      'BBD ($)', 'BDT (৳)', 'BGN (лв)', 'BHD (.د.ب)', 'BIF (FBu)', 'BMD ($)', 'BND ($)', 'BOB ($b)', 'BSD ($)', 'BTN (Nu.)',
+      'BWP (P)', 'BYN (Br)', 'BZD (BZ$)', 'CDF (FC)', 'CLP ($)', 'COP ($)', 'CRC (₡)', 'CUP (₱)', 'CVE ($)', 'CZK (Kč)',
+      'DJF (Fdj)', 'DKK (kr)', 'DOP (RD$)', 'DZD (دج)', 'EGP (E£)', 'ERN (Nfk)', 'ETB (Br)', 'FJD ($)', 'FKP (£)', 'FOK (kr)',
+      'GEL (₾)', 'GGP (£)', 'GHS (₵)', 'GIP (£)', 'GMD (D)', 'GNF (FG)', 'GTQ (Q)', 'GYD ($)', 'HNL (L)', 'HTG (G)',
+      'HUF (Ft)', 'IDR (Rp)', 'ILS (₪)', 'IMP (£)', 'IQD (ع.د)', 'IRR (﷼)', 'ISK (kr)', 'JEP (£)', 'JMD (J$)', 'JOD (JD)',
+      'KES (KSh)', 'KGS (лв)', 'KHR (៛)', 'KID ($)', 'KMF (CF)', 'KWD (KD)', 'KYD ($)', 'KZT (₸)', 'LAK (₭)', 'LBP (£)',
+      'LKR (Rs)', 'LRD ($)', 'LSL (L)', 'LYD (LD)', 'MAD (MAD)', 'MDL (L)', 'MGA (Ar)', 'MKD (ден)', 'MMK (K)', 'MNT (₮)',
+      'MOP (MOP$)', 'MRU (UM)', 'MUR (₨)', 'MVR (.ރ)', 'MWK (MK)', 'MYR (RM)', 'MZN (MT)', 'NAD ($)', 'NGN (₦)', 'NIO (C$)',
+      'NPR (₨)', 'OMR (﷼)', 'PAB (B/.)', 'PEN (S/.)', 'PGK (K)', 'PHP (₱)', 'PKR (₨)', 'PLN (zł)', 'PYG (Gs)', 'QAR (﷼)',
+      'RON (lei)', 'RSD (Дин.)', 'RWF (R₣)', 'SAR (﷼)', 'SBD ($)', 'SCR (₨)', 'SDG (ج.س.)', 'SHP (£)', 'SLE (Le)', 'SLL (Le)',
+      'SOS (S)', 'SRD ($)', 'SSP (£)', 'STN (Db)', 'SYP (£)', 'SZL (E)', 'THB (฿)', 'TJS (SM)', 'TMT (T)', 'TND (DT)',
+      'TOP (T$)', 'TTD (TT$)', 'TVD ($)', 'TWD (NT$)', 'TZS (TSh)', 'UAH (₴)', 'UGX (USh)', 'UYU ($U)', 'UZS (лв)', 'VES (Bs.)',
+      'VND (₫)', 'VUV (VT)', 'WST (T)', 'XAF (FCFA)', 'XCD ($)', 'XDR (SDR)', 'XOF (CFA)', 'XPF (₣)', 'YER (﷼)', 'ZMW (ZK)'
+    ],
+  },
+  {
+    id: 'age',
+    text: "What's your current age?",
+    type: 'number',
+    placeholder: 'e.g., 30',
+  },
+  {
+    id: 'monthlyIncome',
+    text: 'How much is your total monthly income (after taxes)?',
+    type: 'number',
+    placeholder: 'e.g., 4,000',
+  },
+  {
+    id: 'monthlySavings',
+    text: 'How much of your income do you consistently save or invest each month?',
+    type: 'number',
+    placeholder: 'e.g., 500',
+  },
+  {
+    id: 'liquidSavings',
+    text: 'How much do you have in an easily accessible savings account?',
+    subText: 'This is separate from any long-term investments.',
+    type: 'number',
+    placeholder: 'e.g., 10,000',
+  },
+  {
+    id: 'monthlyExpenses',
+    text: 'What are your total monthly living expenses?',
+    subText: 'Include rent, food, transport, bills, etc.',
+    type: 'number',
+    placeholder: 'e.g., 2,500',
+  },
+  {
+    id: 'dependents',
+    text: 'Do you have any financial dependents?',
+    subText: 'e.g., children, spouse, or parents who rely on you financially.',
+    type: 'select',
+    options: ['Yes', 'No'],
+  },
+  {
+    id: 'hasHighInterestDebt',
+    text: 'Do you have any significant high-interest debt?',
+    subText: 'e.g., credit card balances or personal loans.',
+    type: 'select',
+    options: ['Yes', 'No'],
+  },
+  {
+    id: 'totalDebtAmount',
+    text: 'What is the total amount you owe across all high-interest debts?',
+    type: 'number',
+    placeholder: 'e.g., 5,000',
+  },
+  {
+    id: 'debtInterestRate',
+    text: 'What is the average interest rate on these debts?',
+    type: 'number',
+    placeholder: 'e.g., 20 (for 20%)',
+  },
+  {
+    id: 'monthlyDebtRepayment',
+    text: 'What is your current total monthly repayment for all these debts?',
+    type: 'number',
+    placeholder: 'e.g., 200',
+  },
+  {
+    id: 'financialGoal',
+    text: 'What is your primary financial goal for the next 1-3 years?',
+    type: 'select',
+    options: ["Pay off debt", "Buy a house", "Start investing", "Start a business"],
+  },
+];
