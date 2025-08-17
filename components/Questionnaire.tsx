@@ -48,27 +48,32 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ question, onNext, progres
       setError('This field is required.');
       return;
     }
-    const rawValue = parseFormattedNumber(value);
-    if (question.type === 'number' && Number(rawValue) < 0) {
-      setError('Please enter a non-negative number.');
-      return;
+
+    let valueToSend = value;
+
+    if (question.type === 'number') {
+      const rawValue = parseFormattedNumber(value);
+      if (Number(rawValue) < 0) {
+        setError('Please enter a non-negative number.');
+        return;
+      }
+      valueToSend = rawValue;
+    } else if (question.type === 'currency') {
+      // The value from SearchableSelect is the full string, e.g., 'USD ($)'. Extract the symbol.
+      valueToSend = value.match(/\(([^)]+)\)/)?.[1] || '$';
     }
-    onNext(question.id, rawValue);
+    
+    onNext(question.id, valueToSend);
   };
   
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = e.target.value;
-    setValue(selectedValue);
-    if (selectedValue) {
-        onNext(question.id, selectedValue);
-    }
+    setValue(e.target.value);
+    setError('');
   };
 
   const handleCurrencyChange = (selectedValue: string) => {
-      if (selectedValue) {
-          const symbol = selectedValue.match(/\(([^)]+)\)/)?.[1] || '$';
-          onNext(question.id, symbol);
-      }
+    setValue(selectedValue);
+    setError('');
   };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,9 +144,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ question, onNext, progres
 
             {error && <p className="text-red-500 text-sm">{error}</p>}
             
-            {question.type === 'number' && (
-              <Button type="submit">Next</Button>
-            )}
+            <Button type="submit">Next</Button>
           </form>
         </div>
       </div>
