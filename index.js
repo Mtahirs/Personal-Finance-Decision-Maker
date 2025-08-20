@@ -237,36 +237,38 @@ const renderQuestionnaire = () => {
 };
 
 // --- EVENT LISTENER ATTACHMENT ---
-const attachFormListeners = (question) => {
-    const form = document.getElementById('question-form');
+const handleSubmit = (event, question) => {
+    event.preventDefault();
     const errorEl = document.getElementById('error-message');
-    let value = '';
+    const inputEl = document.getElementById('question-input');
+    
+    if (!errorEl || !inputEl) return;
 
-    if (!form || !errorEl) return;
+    const value = inputEl.value;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!value) {
-            errorEl.textContent = 'This field is required.';
+    if (!value) {
+        errorEl.textContent = 'This field is required.';
+        errorEl.style.display = 'block';
+        return;
+    }
+    
+    let valueToSend = value;
+    if (question.type === 'number') {
+        const rawValue = parseFormattedNumber(value);
+        if (isNaN(Number(rawValue)) || Number(rawValue) < 0) {
+            errorEl.textContent = 'Please enter a valid non-negative number.';
             errorEl.style.display = 'block';
             return;
         }
-        
-        let valueToSend = value;
-        if (question.type === 'number') {
-            const rawValue = parseFormattedNumber(value);
-            if (isNaN(Number(rawValue)) || Number(rawValue) < 0) {
-                errorEl.textContent = 'Please enter a valid non-negative number.';
-                errorEl.style.display = 'block';
-                return;
-            }
-            valueToSend = rawValue;
-        } else if (question.type === 'currency') {
-            valueToSend = value.match(/\(([^)]+)\)/)?.[1] || '$';
-        }
-        
-        handleNextQuestion(question.id, valueToSend);
-    };
+        valueToSend = rawValue;
+    }
+    
+    handleNextQuestion(question.id, valueToSend);
+};
+
+const attachFormListeners = (question) => {
+    const form = document.getElementById('question-form');
+    if (!form) return;
 
     if (question.type === 'currency') {
         const currencySelect = document.getElementById('currency-select');
@@ -281,6 +283,15 @@ const attachFormListeners = (question) => {
 
         if (!button || !buttonText || !dropdown || !searchInput || !list || !chevron) return;
 
+        const handleSelect = (optionValue) => {
+            buttonText.textContent = optionValue;
+            buttonText.classList.remove('searchable-select-button-placeholder');
+            dropdown.style.display = 'none';
+            chevron.classList.remove('open');
+            const valueToSend = optionValue.match(/\(([^)]+)\)/)?.[1] || '$';
+            handleNextQuestion(question.id, valueToSend);
+        };
+        
         const updateList = (filter = '') => {
             list.innerHTML = '';
             const filteredOptions = question.options.filter(opt => opt.toLowerCase().includes(filter.toLowerCase()));
@@ -288,7 +299,6 @@ const attachFormListeners = (question) => {
                 filteredOptions.forEach(opt => {
                     const li = document.createElement('li');
                     li.className = 'searchable-select-item';
-                    li.dataset.value = opt;
                     li.textContent = opt;
                     li.addEventListener('click', () => handleSelect(opt));
                     list.appendChild(li);
@@ -298,15 +308,6 @@ const attachFormListeners = (question) => {
             }
         };
 
-        const handleSelect = (optionValue) => {
-            value = optionValue;
-            buttonText.textContent = value;
-            buttonText.classList.remove('searchable-select-button-placeholder');
-            dropdown.style.display = 'none';
-            chevron.classList.remove('open');
-            form.requestSubmit();
-        };
-        
         button.addEventListener('click', (e) => {
             e.stopPropagation();
             const isOpen = dropdown.style.display === 'block';
@@ -326,39 +327,35 @@ const attachFormListeners = (question) => {
                 chevron.classList.remove('open');
             }
         });
+
+        form.addEventListener('submit', (e) => e.preventDefault());
+
     } else {
         const input = document.getElementById('question-input');
-        if (!input) return;
-
-        value = input.value;
+        const errorEl = document.getElementById('error-message');
+        if (!input || !errorEl) return;
+        
         if (question.id !== 'age' && question.type === 'number' && input instanceof HTMLInputElement) {
             input.addEventListener('input', (e) => {
                 const target = e.target;
                 const caretPosition = target.selectionStart;
                 const originalLength = target.value.length;
                 const rawValue = parseFormattedNumber(target.value);
-                const formatted = formatNumberWithCommas(rawValue);
-                value = formatted;
-                target.value = formatted;
-                const newLength = formatted.length;
+                target.value = formatNumberWithCommas(rawValue);
+                const newLength = target.value.length;
                 if (caretPosition !== null) {
                     const newCaretPosition = caretPosition + (newLength - originalLength);
                     target.setSelectionRange(newCaretPosition, newCaretPosition);
                 }
-                errorEl.style.display = 'none';
-            });
-        } else {
-            input.addEventListener('input', (e) => {
-                const target = e.target;
-                value = target.value;
-                errorEl.style.display = 'none';
             });
         }
-    }
-    
-    form.addEventListener('submit', handleSubmit);
-};
+        input.addEventListener('input', () => {
+            errorEl.style.display = 'none';
+        });
 
+        form.addEventListener('submit', (e) => handleSubmit(e, question));
+    }
+};
 
 // --- INITIALIZE APP ---
 document.addEventListener('DOMContentLoaded', () => {
