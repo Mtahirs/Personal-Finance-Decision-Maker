@@ -34,7 +34,7 @@ const QUESTIONS = [
   { id: 'totalDebtAmount', text: 'What is the total amount you owe across all high-interest debts?', type: 'number', placeholder: 'e.g., 5,000' },
   { id: 'debtInterestRate', text: 'What is the average interest rate on these debts?', type: 'number', placeholder: 'e.g., 20 (for 20%)' },
   { id: 'monthlyDebtRepayment', text: 'What is your current total monthly repayment for all these debts?', type: 'number', placeholder: 'e.g., 200' },
-  { id: 'financialGoal', text: 'What is your primary financial goal for the next 1-3 years?', type: 'select', options: ["Pay off debt", "Buy a house", "Start investing", "Start a business"] },
+  { id: 'financialGoal', text: 'What is your primary financial goal for the next 1-3 years?', type: 'select', options: ["Pay off debt", "Buy a house", "Start investing", "Start a business","Build emergency Fund"] },
 ];
 
 const recommendationDetails = {
